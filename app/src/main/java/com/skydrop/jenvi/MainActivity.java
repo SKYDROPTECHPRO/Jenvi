@@ -1,19 +1,23 @@
 package com.skydrop.jenvi;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +28,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import static com.skydrop.jenvi.App.CHANNEL_ID;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,16 +39,18 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recview;
     private TextView currentsongtitle;
     private ImageView currentsongalbumart;
-    private ImageView currentsongplaypause;
+    private ImageButton currentsongplaypause;
 
     private RecyclerviewClickListener songsclicklistener;
-
     private ConstraintLayout layout;
+
+    private NotificationManagerCompat notificationManagerCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        notificationManagerCompat = NotificationManagerCompat.from(MainActivity.this);
         setmappings();
         setsingletons();
         runtimepersimissions();
@@ -52,16 +60,15 @@ public class MainActivity extends AppCompatActivity {
     private void setsingletons() {
         songslist = SongsListSingleton.getInstance();
         currentsong = CurrentPlayingsongSingleton.getInstance();
-        currentsong.setMainactivityalbumart(currentsongalbumart);
-        currentsong.setMainactivityplaypause(currentsongplaypause);
-        currentsong.setMainactivitytitle(currentsongtitle);
+        currentsong.setContext(getApplicationContext());
     }
 
     private void setmappings() {
         recview = findViewById(R.id.recview);
-        currentsongtitle = findViewById(R.id.playingsong_title);
-        currentsongalbumart=findViewById(R.id.playingsong_albumart);
-        currentsongplaypause = findViewById(R.id.playingsong_playpauseicon);
+        currentsongtitle = findViewById(R.id.main_songtitle);
+        currentsongalbumart=findViewById(R.id.main_albumart);
+        System.out.println("in main album art:"+currentsongalbumart);
+        currentsongplaypause = findViewById(R.id.main_pausepause);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
         layout = findViewById(R.id.currenstsonglayout);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
         songsclicklistener =new RecyclerviewClickListener() {
             @Override
             public void OnClick(View v, int pos) {
-                currentsong.setCurrentsong(songslist.get(pos));
+                currentsong.setCurrentsong(songslist.get(pos),getApplicationContext());
+                setdata();
             }
         };
         rec_adapter adapter = new rec_adapter(MainActivity.this,songsclicklistener);
@@ -85,6 +93,30 @@ public class MainActivity extends AppCompatActivity {
         recview.setLayoutManager(manger);
     }
 
+    private void setdata() {
+        currentsongalbumart.setImageResource(currentsong.getAlbumart());
+        currentsongtitle.setText(currentsong.getTitle());
+        if(currentsong.isIsplaying()){
+            currentsongplaypause.setImageResource(R.drawable.pause);
+        }
+        else{
+            currentsongplaypause.setImageResource(R.drawable.pause);
+        }
+        currentsongplaypause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentsong.isIsplaying()){
+                    currentsong.pause();
+                    currentsongplaypause.setImageResource(R.drawable.play);
+                }
+                else{
+                    currentsong.play();
+                    currentsongplaypause.setImageResource(R.drawable.pause);
+                }
+            }
+        });
+        System.out.println("Data setted in main activity,title:"+currentsong.getTitle());
+    }
 
 
     private void getdata(Context context) {
@@ -104,12 +136,22 @@ public class MainActivity extends AppCompatActivity {
                 String duration = cursor.getString(2);
                 String path = cursor.getString(3);
                 String artist = cursor.getString(4);
-                SongModel tempmodel = new SongModel(path,title,artist,album,duration,R.drawable.);
+                SongModel tempmodel = new SongModel(path,title,artist,album,duration,R.drawable.defaultalbumart);
                 songslist.add(tempmodel);
             }
             cursor.close();
         }
 
+    }
+
+    private void sendnotification(View view){
+        Bitmap largeimage = BitmapFactory.decodeResource(getResources(),R.drawable.defaultalbumart);
+//        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
+//                .setSmallIcon(R.drawable.pause)
+//                .setContentTitle("music tittle")
+//                .setContentText(currentsong.getTitle())
+//                .setLargeIcon(largeimage)
+//                .setStyle(new NotificationCompat)
     }
 
     private void runtimepersimissions() {

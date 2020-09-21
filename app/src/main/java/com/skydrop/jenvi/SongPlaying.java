@@ -3,6 +3,7 @@ package com.skydrop.jenvi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,16 +18,31 @@ public class SongPlaying extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playeractivity);
-        currentsong = CurrentPlayingsongSingleton.getInstance();
         setmappings();
+        currentsong = CurrentPlayingsongSingleton.getInstance();
         setdata();
     }
 
     private void setdata() {
-        currentsong.setSongplayingalbumart(albumartview);
-        currentsong.setSongplayingplaypause(playpauseicon);
-        currentsong.setSongplayingtitle(songtitleview);
-        currentsong.loadsong();
+        songtitleview.setText(currentsong.getTitle());
+        albumartview.setImageResource(currentsong.getAlbumart());
+        if(currentsong.isIsplaying()){
+            playpauseicon.setImageResource(R.drawable.pause);
+        }
+        playpauseicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentsong.isIsplaying()){
+                    currentsong.pause();
+                    System.out.println("pasue presed in songplaying");
+                    playpauseicon.setImageResource(R.drawable.play);
+                }
+                else{
+                    currentsong.play();
+                    playpauseicon.setImageResource(R.drawable.pause);
+                }
+            }
+        });
     }
 
     private void setmappings() {

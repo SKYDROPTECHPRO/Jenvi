@@ -56,11 +56,11 @@
             android:layout_height="27dp"
             android:layout_marginStart="92dp"
             android:layout_marginTop="44dp"
-            android:text="TextView"
+            android:text="current song"
             app:layout_constraintStart_toEndOf="@+id/main_albumart"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/main_pausepause"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -69,6 +69,8 @@
             app:layout_constraintStart_toEndOf="@+id/main_albumart"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

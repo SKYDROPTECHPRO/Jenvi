@@ -1,105 +1,84 @@
 package com.skydrop.jenvi;
 
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 public class CurrentPlayingsongSingleton {
     private static CurrentPlayingsongSingleton Instance=new CurrentPlayingsongSingleton();
+    Context context;
     private CurrentPlayingsongSingleton() {}
 
     public static CurrentPlayingsongSingleton getInstance() {
         return Instance;
     }
 
-    private ImageView mainactivityalbumart;
-    private TextView mainactivitytitle;
-    private ImageView mainactivityplaypause;
-    private ImageView songplayingalbumart;
-    private ImageView songplayingplaypause;
-    private TextView songplayingtitle;
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     private SongModel currentsong;
     private boolean isplaying = false;
     private MediaPlayer player;
 
-    public void setMainactivityalbumart(ImageView mainactivityalbumart) {
-        this.mainactivityalbumart = mainactivityalbumart;
-    }
-
-    public void setMainactivitytitle(TextView mainactivitytitle) {
-        this.mainactivitytitle = mainactivitytitle;
-    }
-
-    public void setMainactivityplaypause(ImageView mainactivityplaypause) {
-        this.mainactivityplaypause = mainactivityplaypause;
-        mainactivityplaypause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentsong != null){
-                    if(isplaying){
-                        pause();
-                    }
-                    else {
-                        play();
-                    }
-                }
-            }
-        });
-    }
-
-    public void setSongplayingalbumart(ImageView songplayingalbumart) {
-        this.songplayingalbumart = songplayingalbumart;
-    }
-
-    public void setSongplayingplaypause(ImageView songplayingplaypause) {
-        this.songplayingplaypause = songplayingplaypause;
-    }
-
-    public void setSongplayingtitle(TextView songplayingtitle) {
-        this.songplayingtitle = songplayingtitle;
-    }
+    private String title;
+    private String duration;
+    private int albumart;
 
 
-    public void setCurrentsong(SongModel currentsong) {
+    public void setCurrentsong(SongModel currentsong,Context cont) {
         this.currentsong = currentsong;
-        loadsong();
+        loadmedia(cont);
     }
 
-    public void loadsong() {
-        mainactivityalbumart.setImageResource(currentsong.getAlbumart());
-        mainactivitytitle.setText(currentsong.getTitle());
-        songplayingalbumart.setImageResource(currentsong.getAlbumart());
-        songplayingtitle.setText(currentsong.getTitle());
-        if(!isplaying){
-            loadmedia();
-            play();
+
+    private void loadmedia(Context cont) {
+        System.out.println("load midea:"+currentsong.getPath());
+        if(player != null){
+            player.stop();
+
         }
-    }
-
-    private void loadmedia() {
-
-    }
-
-    private void pause(){
-        isplaying = false;
-        setplaypauseicons();
-    }
-
-    private void play(){
-        isplaying = true;
-        setplaypauseicons();
-    }
-
-    private void setplaypauseicons(){
-        if(isplaying){
-            mainactivityplaypause.setImageResource(R.drawable.pause);
-            songplayingplaypause.setImageResource(R.drawable.pause);
+        assert player != null;
+        player = MediaPlayer.create(cont,Uri.parse(currentsong.getPath()));
+        if(player==null){
+            System.out.println("olauer is null");
         }
         else{
-            mainactivityplaypause.setImageResource(R.drawable.play);
-            songplayingplaypause.setImageResource(R.drawable.play);
+            player.start();
         }
+        this.title = currentsong.getTitle();
+        this.albumart=currentsong.getAlbumart();
+        this.duration = currentsong.getDuration();
+    }
+
+    public void pause(){
+        isplaying = false;
+        player.pause();
+    }
+
+    public void play(){
+        isplaying = true;
+        player.start();
+    }
+
+    public boolean isIsplaying() {
+        return isplaying;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public int getAlbumart() {
+        return albumart;
     }
 }
