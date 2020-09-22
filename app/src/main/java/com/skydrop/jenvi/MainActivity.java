@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendnotification(View view){
-        Bitmap largeimage = BitmapFactory.decodeResource(getResources(),R.drawable.defaultalbumart);
+        Bitmap largeimage = BitmapFactory.decodeResource(getResources(),currentsong.getAlbumart());
 //        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
 //                .setSmallIcon(R.drawable.pause)
 //                .setContentTitle("music tittle")

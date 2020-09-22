@@ -3,11 +3,6 @@ package com.skydrop.jenvi;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.io.IOException;
 
 public class CurrentPlayingsongSingleton {
     private static CurrentPlayingsongSingleton Instance=new CurrentPlayingsongSingleton();
