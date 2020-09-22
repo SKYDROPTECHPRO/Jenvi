@@ -24,10 +24,11 @@ public class CurrentPlayingsongSingleton {
     private String title;
     private String duration;
     private int albumart;
+    private SongsListSingleton sonngslist = SongsListSingleton.getInstance();
 
 
-    public void setCurrentsong(SongModel currentsong,Context cont) {
-        this.currentsong = currentsong;
+    public void setCurrentsong(int pos,Context cont) {
+        this.currentsong = sonngslist.get(pos);
         loadmedia(cont);
     }
 

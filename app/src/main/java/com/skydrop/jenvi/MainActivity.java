@@ -1,18 +1,14 @@
 package com.skydrop.jenvi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,8 +23,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-
-import static com.skydrop.jenvi.App.CHANNEL_ID;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         songsclicklistener =new RecyclerviewClickListener() {
             @Override
             public void OnClick(View v, int pos) {
-                currentsong.setCurrentsong(songslist.get(pos),getApplicationContext());
+                currentsong.setCurrentsong(pos,getApplicationContext());
                 setdata();
             }
         };
@@ -144,15 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void sendnotification(View view){
-        Bitmap largeimage = BitmapFactory.decodeResource(getResources(),currentsong.getAlbumart());
-//        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
-//                .setSmallIcon(R.drawable.pause)
-//                .setContentTitle("music tittle")
-//                .setContentText(currentsong.getTitle())
-//                .setLargeIcon(largeimage)
-//                .setStyle(new NotificationCompat)
-    }
 
     private void runtimepersimissions() {
         Dexter.withContext(MainActivity.this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
