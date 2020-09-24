@@ -17,7 +17,7 @@ import static com.skydrop.jenvi.NotificationReceiver.PLAY_ACTION;
 public class Singleton {
     public static Singleton Instance = new Singleton();
     private Singleton(){}
-    public boolean isplaying = false;
+    public boolean isplaying = true;
     public Context applicationcontext;
     public Bitmap artwork;
 
@@ -42,7 +42,7 @@ public class Singleton {
                 .setLargeIcon(artwork)
                 .addAction(R.drawable.ic_dislike, "Dislike",null)
                 .addAction(R.drawable.ic_previous, "Previous", null)
-                .addAction(R.drawable.ic_pause, "Pause", playIntent)
+                .addAction(Singleton.Instance.isplaying?R.drawable.ic_pause: R.drawable.ic_play, "Pause", playIntent)
                 .addAction(R.drawable.ic_next, "Next", nexting)
                 .addAction(R.drawable.ic_like, "Like", null)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
@@ -53,6 +53,7 @@ public class Singleton {
 //                        .setShowActionsInCompactView(1, 2, 3)
 //                        .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setNumber(0)
                 .setOngoing(Singleton.Instance.isplaying)
                 .build();
 
