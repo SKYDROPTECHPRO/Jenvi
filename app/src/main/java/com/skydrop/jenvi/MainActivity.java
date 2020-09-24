@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.idle);
 
 
-        Notification notification = null;
+        Notification notification;
         notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_two)
                 .setContentTitle(title)
