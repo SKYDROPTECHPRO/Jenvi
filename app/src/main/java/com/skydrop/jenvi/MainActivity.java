@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.idle);
 
+        Intent nextaction = new Intent();
+        nextaction.putExtra("toastMessage","Next presses");
+        PendingIntent nexting = PendingIntent.getBroadcast(MainActivity.this,0,nextaction,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification;
         notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setLargeIcon(artwork)
-                .addAction(R.drawable.ic_dislike, "Dislike", null)
+                .addAction(R.drawable.ic_dislike, "Dislike",null)
                 .addAction(R.drawable.ic_previous, "Previous", null)
                 .addAction(R.drawable.ic_pause, "Pause", null)
                 .addAction(R.drawable.ic_next, "Next", null)
