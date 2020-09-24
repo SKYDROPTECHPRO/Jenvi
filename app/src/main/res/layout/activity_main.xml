@@ -27,9 +27,9 @@
         android:text="Send on Channel 1" />
 
     <Button
+        android:id="@+id/chanel2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="sendOnChannel2"
         android:text="Send on Channel 2" />
 
 </LinearLayout>
