@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.idle);
 
-        Intent nextaction = new Intent();
+        Intent nextaction = new Intent(MainActivity.this,NotificationReceiver.class);
         nextaction.putExtra("toastMessage","Next presses");
         PendingIntent nexting = PendingIntent.getBroadcast(MainActivity.this,0,nextaction,PendingIntent.FLAG_UPDATE_CURRENT);
 

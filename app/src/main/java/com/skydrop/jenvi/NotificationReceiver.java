@@ -14,6 +14,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String message = intent.getStringExtra("toastMessage");
+        System.out.println("msg:"+message);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }
