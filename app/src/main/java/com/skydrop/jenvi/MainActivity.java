@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 .addAction(R.drawable.ic_dislike, "Dislike",null)
                 .addAction(R.drawable.ic_previous, "Previous", null)
                 .addAction(R.drawable.ic_pause, "Pause", null)
-                .addAction(R.drawable.ic_next, "Next", null)
+                .addAction(R.drawable.ic_next, "Next", nexting)
                 .addAction(R.drawable.ic_like, "Like", null)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1,2,3)
