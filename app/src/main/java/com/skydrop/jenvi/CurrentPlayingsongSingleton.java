@@ -38,15 +38,19 @@ public class CurrentPlayingsongSingleton {
 
     private void loadmedia(Context cont) {
         System.out.println("load midea:"+currentsong.getPath());
-        if(player != null){
-            player.stop();
-
+        try {
+            if(player != null){
+                player.stop();
+            }
+            player = MediaPlayer.create(cont,Uri.parse(currentsong.getPath()));
+            this.title = currentsong.getTitle();
+            this.albumart=currentsong.getAlbumart();
+            this.duration = currentsong.getDuration();
+            play();
         }
-        player = MediaPlayer.create(cont,Uri.parse(currentsong.getPath()));
-        this.title = currentsong.getTitle();
-        this.albumart=currentsong.getAlbumart();
-        this.duration = currentsong.getDuration();
-        play();
+        catch (Exception e){
+            nextsong();
+        }
     }
 
     public void pause(){

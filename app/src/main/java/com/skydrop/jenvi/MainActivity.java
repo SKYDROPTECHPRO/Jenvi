@@ -113,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
         currentsongalbumart.setImageResource(currentsong.getAlbumart());
         currentsongtitle.setText(currentsong.getTitle());
         if(currentsong.isIsplaying()){
-            play_pause_bnt.setImageResource(R.drawable.play);
+            play_pause_bnt.setImageResource(R.drawable.pause);
         }
         else{
-            play_pause_bnt.setImageResource(R.drawable.pause);
+            play_pause_bnt.setImageResource(R.drawable.play);
         }
     }
 

@@ -78,7 +78,7 @@
             app:layout_constraintHorizontal_bias="0.684"
             app:layout_constraintStart_toEndOf="@+id/main_album_art"
             app:layout_constraintTop_toTopOf="@+id/main_play_pause"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/prev" />
 
         <ImageButton
             android:id="@+id/main_next"
@@ -88,7 +88,7 @@
             app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toEndOf="@+id/main_play_pause"
             app:layout_constraintTop_toTopOf="@+id/main_play_pause"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/next"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
