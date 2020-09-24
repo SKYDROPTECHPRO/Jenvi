@@ -7,7 +7,8 @@ import android.net.Uri;
 public class CurrentPlayingsongSingleton {
     private static CurrentPlayingsongSingleton Instance=new CurrentPlayingsongSingleton();
     Context context;
-    private CurrentPlayingsongSingleton() {}
+    private CurrentPlayingsongSingleton() {
+    }
 
     public static CurrentPlayingsongSingleton getInstance() {
         return Instance;
@@ -18,18 +19,20 @@ public class CurrentPlayingsongSingleton {
     }
 
     private SongModel currentsong;
+    private int position;
     private boolean isplaying = false;
     private MediaPlayer player;
 
     private String title;
     private String duration;
     private int albumart;
-    private SongsListSingleton sonngslist = SongsListSingleton.getInstance();
+    private SongsListSingleton songslist = SongsListSingleton.getInstance();
 
 
-    public void setCurrentsong(int pos,Context cont) {
-        this.currentsong = sonngslist.get(pos);
-        loadmedia(cont);
+    public void setCurrentsong(int pos) {
+        position = pos;
+        this.currentsong = songslist.get(pos);
+        loadmedia(context);
     }
 
 
@@ -39,17 +42,11 @@ public class CurrentPlayingsongSingleton {
             player.stop();
 
         }
-        assert player != null;
         player = MediaPlayer.create(cont,Uri.parse(currentsong.getPath()));
-        if(player==null){
-            System.out.println("olauer is null");
-        }
-        else{
-            player.start();
-        }
         this.title = currentsong.getTitle();
         this.albumart=currentsong.getAlbumart();
         this.duration = currentsong.getDuration();
+        play();
     }
 
     public void pause(){
@@ -60,6 +57,20 @@ public class CurrentPlayingsongSingleton {
     public void play(){
         isplaying = true;
         player.start();
+    }
+
+    public void nextsong(){
+        position++;
+        position = position % songslist.size();
+        setCurrentsong(position);
+    }
+
+    public void prevsong(){
+        position--;
+        if(position<0){
+            position = songslist.size()-1;
+        }
+        setCurrentsong(position);
     }
 
     public boolean isIsplaying() {

@@ -34,7 +34,6 @@ public class SongPlaying extends AppCompatActivity {
             public void onClick(View v) {
                 if(currentsong.isIsplaying()){
                     currentsong.pause();
-                    System.out.println("pasue presed in songplaying");
                     playpauseicon.setImageResource(R.drawable.play);
                 }
                 else{

@@ -1,7 +1,6 @@
 package com.skydrop.jenvi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,22 +32,17 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recview;
     private TextView currentsongtitle;
     private ImageView currentsongalbumart;
-    private ImageButton currentsongplaypause;
-
-    private RecyclerviewClickListener songsclicklistener;
-    private ConstraintLayout layout;
-
-    private NotificationManagerCompat notificationManagerCompat;
+    private ImageButton play_pause_bnt;
+    private ImageButton next_bnt;
+    private ImageButton prev_bnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        notificationManagerCompat = NotificationManagerCompat.from(MainActivity.this);
         setmappings();
         setsingletons();
         runtimepersimissions();
-        showdata();
     }
 
     private void setsingletons() {
@@ -59,11 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setmappings() {
         recview = findViewById(R.id.recview);
-        currentsongtitle = findViewById(R.id.main_songtitle);
-        currentsongalbumart=findViewById(R.id.main_albumart);
-        System.out.println("in main album art:"+currentsongalbumart);
-        currentsongplaypause = findViewById(R.id.main_pausepause);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-        layout = findViewById(R.id.currenstsonglayout);
+        currentsongtitle = findViewById(R.id.main_song_title);
+        currentsongalbumart=findViewById(R.id.main_album_art);
+        play_pause_bnt = findViewById(R.id.main_play_pause);
+        prev_bnt = findViewById(R.id.main_prev);
+        next_bnt = findViewById(R.id.main_next);
+        ConstraintLayout layout = findViewById(R.id.main_song_layout);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,17 +66,44 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(playingsong);
             }
         });
+        play_pause_bnt.setOnClickListener(playerlistener);
+        next_bnt.setOnClickListener(playerlistener);
+        prev_bnt.setOnClickListener(playerlistener);
     }
 
-    private void showdata() {
-        songsclicklistener =new RecyclerviewClickListener() {
+    private View.OnClickListener playerlistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(v == play_pause_bnt){
+                if(currentsong.isIsplaying()){
+                    currentsong.pause();
+                    play_pause_bnt.setImageResource(R.drawable.play);
+                }
+                else{
+                    currentsong.play();
+                    play_pause_bnt.setImageResource(R.drawable.pause);
+                }
+            }
+            else if(v==next_bnt){
+                currentsong.nextsong();
+                setdata();
+            }
+            else if(v==prev_bnt){
+                currentsong.prevsong();
+                setdata();
+            }
+        }
+    };
+
+    private void setdataandadapter() {
+        RecyclerviewClickListener songsclicklistener = new RecyclerviewClickListener() {
             @Override
             public void OnClick(View v, int pos) {
-                currentsong.setCurrentsong(pos,getApplicationContext());
+                currentsong.setCurrentsong(pos);
                 setdata();
             }
         };
-        rec_adapter adapter = new rec_adapter(MainActivity.this,songsclicklistener);
+        rec_adapter adapter = new rec_adapter(MainActivity.this, songsclicklistener);
         LinearLayoutManager manger = new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
         recview.setAdapter(adapter);
         recview.setLayoutManager(manger);
@@ -91,25 +113,11 @@ public class MainActivity extends AppCompatActivity {
         currentsongalbumart.setImageResource(currentsong.getAlbumart());
         currentsongtitle.setText(currentsong.getTitle());
         if(currentsong.isIsplaying()){
-            currentsongplaypause.setImageResource(R.drawable.pause);
+            play_pause_bnt.setImageResource(R.drawable.play);
         }
         else{
-            currentsongplaypause.setImageResource(R.drawable.pause);
+            play_pause_bnt.setImageResource(R.drawable.pause);
         }
-        currentsongplaypause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentsong.isIsplaying()){
-                    currentsong.pause();
-                    currentsongplaypause.setImageResource(R.drawable.play);
-                }
-                else{
-                    currentsong.play();
-                    currentsongplaypause.setImageResource(R.drawable.pause);
-                }
-            }
-        });
-        System.out.println("Data setted in main activity,title:"+currentsong.getTitle());
     }
 
 
@@ -145,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 getdata(MainActivity.this);
+                setdataandadapter();
+
             }
 
             @Override

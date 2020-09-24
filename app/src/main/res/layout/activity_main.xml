@@ -30,8 +30,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/currenstsonglayout"
-        android:layout_width="421dp"
+        android:id="@+id/main_song_layout"
+        android:layout_width="0dp"
         android:layout_height="148dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recview">
 
         <ImageView
-            android:id="@+id/main_albumart"
+            android:id="@+id/main_album_art"
             android:layout_width="90dp"
             android:layout_height="93dp"
             android:layout_marginStart="16dp"
@@ -51,23 +51,43 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/main_songtitle"
+            android:id="@+id/main_song_title"
             android:layout_width="120dp"
             android:layout_height="27dp"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="16dp"
             android:text="current song"
-            app:layout_constraintStart_toEndOf="@+id/main_albumart"
+            app:layout_constraintStart_toEndOf="@+id/main_album_art"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/main_pausepause"
+            android:id="@+id/main_play_pause"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="76dp"
-            app:layout_constraintStart_toEndOf="@+id/main_albumart"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/main_next"
+            app:layout_constraintStart_toEndOf="@+id/main_prev"
+            app:layout_constraintTop_toBottomOf="@+id/main_song_title"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageButton
+            android:id="@+id/main_prev"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toStartOf="@+id/main_play_pause"
+            app:layout_constraintHorizontal_bias="0.684"
+            app:layout_constraintStart_toEndOf="@+id/main_album_art"
+            app:layout_constraintTop_toTopOf="@+id/main_play_pause"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageButton
+            android:id="@+id/main_next"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.166"
+            app:layout_constraintStart_toEndOf="@+id/main_play_pause"
+            app:layout_constraintTop_toTopOf="@+id/main_play_pause"
             tools:srcCompat="@tools:sample/avatars" />
 
 
