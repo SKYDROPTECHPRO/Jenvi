@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mediaSession = new MediaSessionCompat(this, "tag");
     }
 
-    public void sendOnChannel2(View v) {
+    public void sendOnChannel1(View v) {
         String title = editTextTitle.getText().toString();
         String message = editTextMessage.getText().toString();
 
@@ -67,13 +67,15 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(1, notification);
     }
 
-    public void sendOnChannel1(View v) {
+    public void sendOnChannel2(View v) {
         String title = editTextTitle.getText().toString();
         String message = editTextMessage.getText().toString();
 
         Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.idle);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
+
+        Notification notification = null;
+        notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_two)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -85,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
                 .addAction(R.drawable.ic_like, "Like", null)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1,2,3)
-                .setMediaSession(mediaSession.getSessionToken()))
+
+                )
 //                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
 //                        .setShowActionsInCompactView(1, 2, 3)
 //                        .setMediaSession(mediaSession.getSessionToken()))
-                .setSubText("Sub Text")
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
 
