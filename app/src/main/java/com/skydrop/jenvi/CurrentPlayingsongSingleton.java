@@ -1,10 +1,12 @@
 package com.skydrop.jenvi;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
 public class CurrentPlayingsongSingleton {
+    @SuppressLint("StaticFieldLeak")
     private static CurrentPlayingsongSingleton Instance=new CurrentPlayingsongSingleton();
     Context context;
     private CurrentPlayingsongSingleton() {
@@ -92,4 +94,5 @@ public class CurrentPlayingsongSingleton {
     public int getAlbumart() {
         return albumart;
     }
+
 }
