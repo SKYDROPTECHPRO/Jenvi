@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v, int pos) {
                 position = pos;
 
-               Long uriId = Long.valueOf(songdata.getSingslist(position).getId());
+             /*  Long uriId = Long.valueOf(songdata.getSingslist(position).getId());
                Uri uri = Uri.parse("content://media/external/audio/albumart");
                Uri art = ContentUris.withAppendedId(uri, uriId);
                 resolver = new ContentResolver(getApplicationContext()) {
@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 }catch (IOException e){
                     Log.d("errorthumbnail",e.toString());
                 }
-                System.out.print("main albumart"+album_art);
+                System.out.print("main albumart"+album_art);*/
+
+
                 currentSong.setText(songdata.getSingslist(position).getTitle());
 
                 song.play(getApplicationContext());

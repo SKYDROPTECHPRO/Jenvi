@@ -2,9 +2,11 @@ package com.skydrop.jenvi;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,11 +19,15 @@ public class Playeractivity extends AppCompatActivity {
     ImageButton play;
     ImageButton pause;
     TextView songName;
-
+    SeekBar seekBar;
+    TextView played_duration;
+    TextView total_duration;
+    Handler handler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playeractivity);
+        handler = new Handler();
         setMappings();
         songName.setText(singleton.getSingslist(MainActivity.position).getTitle());
         play.setOnClickListener(new OnClickListener() {
@@ -42,6 +48,7 @@ public class Playeractivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+       song.seek_Bar(seekBar,played_duration,total_duration,handler);
     }
 
     @Override
@@ -54,6 +61,9 @@ public class Playeractivity extends AppCompatActivity {
         play = (ImageButton)findViewById(R.id.play);
         pause = (ImageButton)findViewById(R.id.pause);
         songName = (TextView)findViewById(R.id.name);
+        seekBar = (SeekBar)findViewById(R.id.seekBar);
+        played_duration = (TextView)findViewById(R.id.playduration);
+        total_duration = (TextView)findViewById(R.id.totalduration);
     }
 
 }
