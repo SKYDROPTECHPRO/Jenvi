@@ -6,18 +6,12 @@ import android.net.Uri;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 public class song_singleton extends AppCompatActivity {
     SongsList_singleton singleton = SongsList_singleton.getInstance();
     SongModel model;
     MediaPlayer mediaPlayer;
-
-
     int pausepos;
     int position;
     public static song_singleton instance = new song_singleton();
@@ -59,8 +53,11 @@ public class song_singleton extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-                if(mediaPlayer != null && b)
-                mediaPlayer.seekTo(i * 1000);
+                if(mediaPlayer != null && b) {
+                    mediaPlayer.seekTo(i * 1000);
+                   // mediaPlayer.start();
+                }
+
             }
 
             @Override
@@ -70,8 +67,11 @@ public class song_singleton extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null)
+                if(mediaPlayer != null) {
                     mediaPlayer.seekTo(seekBar.getProgress());
+                    mediaPlayer.start();
+                    pausepos = mediaPlayer.getCurrentPosition();
+                }
             }
         });
      song_singleton.this.runOnUiThread(new Runnable() {
