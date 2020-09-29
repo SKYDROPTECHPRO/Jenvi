@@ -55,7 +55,7 @@ public class song_singleton extends AppCompatActivity {
 
                 if(mediaPlayer != null && b) {
                     mediaPlayer.seekTo(i * 1000);
-                   // mediaPlayer.start();
+                    drag(seekBar.getProgress());
                 }
 
             }
@@ -67,14 +67,10 @@ public class song_singleton extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null) {
-                    mediaPlayer.seekTo(seekBar.getProgress());
-                    mediaPlayer.start();
-                    pausepos = mediaPlayer.getCurrentPosition();
-                }
+
             }
         });
-     song_singleton.this.runOnUiThread(new Runnable() {
+        song_singleton.this.runOnUiThread(new Runnable() {
          @Override
          public void run() {
              if(mediaPlayer != null){
@@ -84,9 +80,14 @@ public class song_singleton extends AppCompatActivity {
              }
              handler.postDelayed(this,1000);
          }
-     });
+        });
 
     }
+    private void drag(int progress) {
+           mediaPlayer.seekTo(progress);
+           mediaPlayer.start();
+    }
+
     private String formattedTime(int currentPos) {
         String total1;
         String total2;
