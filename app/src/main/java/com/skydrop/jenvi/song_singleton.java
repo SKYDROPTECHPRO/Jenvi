@@ -44,7 +44,6 @@ public class song_singleton extends AppCompatActivity {
     }
     void seek_Bar(final SeekBar seekBar, final TextView played_duration, TextView total_duration, final android.os.Handler handler){
         int duration = Integer.parseInt(singleton.getSingslist(position).getDuration());
-        //total_duration.setText(Integer.toString(duration));
         total_duration.setText(formattedTime(duration));
         seekBar.setMax(Integer.parseInt(singleton.getSingslist(position).getDuration()));
 
