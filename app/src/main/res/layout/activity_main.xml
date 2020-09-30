@@ -32,6 +32,6 @@
         android:layout_below="@+id/recview"
         android:layout_alignParentBottom="true"
 
-        android:text="TextView" />
+       />
 
 </RelativeLayout>

@@ -15,7 +15,8 @@ public class Playeractivity extends AppCompatActivity {
     song_singleton song = song_singleton.instance;
     ImageButton back;
     ImageButton play;
-    ImageButton pause;
+    ImageButton prev;
+    ImageButton next;
     TextView songName;
     SeekBar seekBar;
     TextView played_duration;
@@ -31,13 +32,7 @@ public class Playeractivity extends AppCompatActivity {
         play.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                song.play(getApplicationContext());
-            }
-        });
-        pause.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                song.pause();
+                song.play(getApplicationContext(),play);
             }
         });
         back.setOnClickListener(new OnClickListener() {
@@ -46,7 +41,19 @@ public class Playeractivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-       song.seek_Bar(seekBar,played_duration,total_duration,handler);
+        song.seek_Bar(seekBar,played_duration,total_duration,handler);
+        next.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                song.next(getApplicationContext(),songName);
+            }
+        });
+        prev.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                song.prev(getApplicationContext(),songName);
+            }
+        });
     }
 
     @Override
@@ -55,9 +62,10 @@ public class Playeractivity extends AppCompatActivity {
     }
 
     private void setMappings() {
+        next = (ImageButton)findViewById(R.id.next);
+        prev = (ImageButton)findViewById(R.id.prev);
         back = (ImageButton)findViewById(R.id.backbutton);
         play = (ImageButton)findViewById(R.id.play);
-        pause = (ImageButton)findViewById(R.id.pause);
         songName = (TextView)findViewById(R.id.name);
         seekBar = (SeekBar)findViewById(R.id.seekBar);
         played_duration = (TextView)findViewById(R.id.playduration);

@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 currentSong.setText(songdata.getSingslist(position).getTitle());
-
                 song.play(getApplicationContext());
                // Intent intent = new Intent(getApplicationContext(), Playeractivity.class);
                // startActivity(intent);
