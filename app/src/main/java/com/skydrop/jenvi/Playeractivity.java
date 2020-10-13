@@ -22,17 +22,27 @@ public class Playeractivity extends AppCompatActivity {
     TextView played_duration;
     TextView total_duration;
     Handler handler;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("title in onstart:"+MainActivity.position);
+        songName.setText(singleton.getSingslist(MainActivity.position).getTitle());
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playeractivity);
         handler = new Handler();
         setMappings();
-        songName.setText(singleton.getSingslist(MainActivity.position).getTitle());
+        song.play = play;
+        song.SongName = songName;
+
         play.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                song.play(getApplicationContext(),play);
+                song.player(getApplicationContext());
             }
         });
         back.setOnClickListener(new OnClickListener() {
@@ -45,13 +55,15 @@ public class Playeractivity extends AppCompatActivity {
         next.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                song.next(getApplicationContext(),songName);
+                song.next(getApplicationContext());
+                song.seek_Bar(seekBar,played_duration,total_duration,handler);
             }
         });
         prev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                song.prev(getApplicationContext(),songName);
+                song.prev(getApplicationContext());
+                song.seek_Bar(seekBar,played_duration,total_duration,handler);
             }
         });
     }

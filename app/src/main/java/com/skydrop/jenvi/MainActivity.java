@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("main activity started");
         recview = findViewById(R.id.recview);
         currentSong = (TextView)findViewById(R.id.currentSong);
+
         songdata = SongsList_singleton.getInstance();
         currentSong.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.print("main albumart"+album_art);*/
 
 
-                currentSong.setText(songdata.getSingslist(position).getTitle());
+                song.txt = currentSong;
+                System.out.println("song txt"+song.txt);
                 song.play(getApplicationContext());
-               // Intent intent = new Intent(getApplicationContext(), Playeractivity.class);
-               // startActivity(intent);
+
             }
 
         };

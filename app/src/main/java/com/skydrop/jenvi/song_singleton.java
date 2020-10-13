@@ -16,28 +16,56 @@ public class song_singleton extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     int pausepos;
     int position;
+    TextView SongName;
+    TextView txt;
+    ImageButton play;
     public static song_singleton instance = new song_singleton();
-    void play(Context context) {
-        position = MainActivity.position;
-        Toast.makeText(context,"songindex"+position,Toast.LENGTH_SHORT).show();
-        model = singleton.getSingslist(position);
-        if(mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
-            mediaPlayer.start();
-        }
-        if (!mediaPlayer.isPlaying()){
-            mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
-            mediaPlayer.seekTo(pausepos);
-            mediaPlayer.start();
-        }
-        else if(mediaPlayer.isPlaying()){
-            mediaPlayer.stop();
-            mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
-            mediaPlayer.start();
-        }
+    void play(final Context context) {
+            position = MainActivity.position;
+            Toast.makeText(context,"songindex"+position,Toast.LENGTH_SHORT).show();
+            model = singleton.getSingslist(position);
+            txt.setText(singleton.getSingslist(position).getTitle());
+            if(mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
+                mediaPlayer.start();
+//                SongName.setText(singleton.getSingslist(position).getTitle());
+
+            }
+//            if (!mediaPlayer.isPlaying()){
+//                mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
+//                mediaPlayer.seekTo(pausepos);
+//                mediaPlayer.start();
+////                SongName.setText(singleton.getSingslist(position).getTitle());
+//            }
+            if(mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
+                mediaPlayer.start();
+//                SongName.setText(singleton.getSingslist(position).getTitle());
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+
+                        mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(singleton.getSingslist(++position).getPath()));
+                        mediaPlayer.start();
+                    }
+                });
+            }
+//             if(mediaPlayer.getCurrentPosition() == mediaPlayer.getDuration()) {
+
+//                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mediaPlayer) {
+//
+//                        mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(singleton.getSingslist(++position).getPath()));
+//                        mediaPlayer.start();
+//                    }
+//                });
+//              }
+
     }
 
-    void play(final Context context, final ImageButton play) {
+    void player(final Context context) {
         Toast.makeText(context,"songindex"+position,Toast.LENGTH_SHORT).show();
         model = singleton.getSingslist(position);
                 if (!mediaPlayer.isPlaying()){
@@ -45,12 +73,27 @@ public class song_singleton extends AppCompatActivity {
                     play.setImageResource(R.drawable.ic_baseline_pause_24);
                     mediaPlayer.seekTo(pausepos);
                     mediaPlayer.start();
+                    SongName.setText(singleton.getSingslist(position).getTitle());
+
                 }
                 else if(mediaPlayer.isPlaying()){
                     play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
                     mediaPlayer.pause();
                     pausepos = mediaPlayer.getCurrentPosition();
                 }
+//                 if(mediaPlayer.getCurrentPosition() == mediaPlayer.getDuration()) {
+
+//                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                        @Override
+//                        public void onCompletion(MediaPlayer mediaPlayer) {
+//
+//                            mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(singleton.getSingslist(++position).getPath()));
+//                            mediaPlayer.start();
+//                        }
+//                    });
+//                }
+        txt.setText(singleton.getSingslist(position).getTitle());
+
     }
 //    void pause(){
 //        mediaPlayer.pause();
@@ -61,15 +104,18 @@ public class song_singleton extends AppCompatActivity {
 //        mediaPlayer = null;
 //    }
     void seek_Bar(final SeekBar seekBar, final TextView played_duration, TextView total_duration, final android.os.Handler handler){
-        int duration = Integer.parseInt(singleton.getSingslist(position).getDuration());
+
+        int duration = mediaPlayer.getDuration();
         total_duration.setText(formattedTime(duration));
-        seekBar.setMax(Integer.parseInt(singleton.getSingslist(position).getDuration()));
+        seekBar.setMax(mediaPlayer.getDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if(mediaPlayer != null && b) {
                     mediaPlayer.seekTo(i * 1000);
                     drag(seekBar.getProgress());
+                    play.setImageResource(R.drawable.ic_baseline_pause_24);
+                    mediaPlayer.start();
                 }
             }
             @Override
@@ -82,12 +128,12 @@ public class song_singleton extends AppCompatActivity {
         song_singleton.this.runOnUiThread(new Runnable() {
          @Override
          public void run() {
-             if(mediaPlayer != null){
-                 int currentPos = mediaPlayer.getCurrentPosition() ;
+             if (mediaPlayer != null) {
+                 int currentPos = mediaPlayer.getCurrentPosition();
                  seekBar.setProgress(currentPos);
                  played_duration.setText(formattedTime(currentPos));
              }
-             handler.postDelayed(this,1000);
+             handler.postDelayed(this, 1000);
          }
         });
     }
@@ -109,25 +155,37 @@ public class song_singleton extends AppCompatActivity {
             return total2;
     }
 
-    void next(Context applicationContext, TextView songName){
+    void next(Context applicationContext){
+        System.out.print("play value"+play);
+        play.setImageResource(R.drawable.ic_baseline_pause_24);
         mediaPlayer.stop();
-        if(position<singleton.songslist.size()-1) {
-            mediaPlayer = MediaPlayer.create(applicationContext, Uri.parse(singleton.getSingslist(++position).getPath()));
-            songName.setText(singleton.getSingslist(position).getTitle());
-            mediaPlayer.start();
+        if(position>=singleton.songslist.size()-1) {
+            position = -1;
         }
+        ++position;
+       play(applicationContext,position);
+        txt.setText(singleton.getSingslist(position).getTitle());
+        System.out.println("txt value"+txt);
+        MainActivity.position = position;
     }
 
-
-
-    public void prev(Context applicationContext, TextView songName) {
+    public void prev(Context applicationContext) {
+        play.setImageResource(R.drawable.ic_baseline_pause_24);
         mediaPlayer.stop();
         if(position>1) {
             position--;
-            mediaPlayer = MediaPlayer.create(applicationContext, Uri.parse(singleton.getSingslist(position).getPath()));
-            songName.setText(singleton.getSingslist(position).getTitle());
-            mediaPlayer.start();
         }
+           play(applicationContext,position);
+        txt.setText(singleton.getSingslist(position).getTitle());
+        System.out.println("txt value"+txt);
+        MainActivity.position = position;
+    }
+    void play(Context applicationContext,int pos){
+        mediaPlayer = MediaPlayer.create(applicationContext, Uri.parse(singleton.getSingslist(pos).getPath()));
+        SongName.setText(singleton.getSingslist(position).getTitle());
+        mediaPlayer.start();
     }
 }
+
+
 
