@@ -23,26 +23,26 @@ public class Singleton {
 
     public void sendOnChannel2() {
 
-        Intent nextaction = new Intent(Singleton.Instance.applicationcontext,NotificationReceiver.class);
+        Intent nextaction = new Intent(applicationcontext,NotificationReceiver.class);
         nextaction.putExtra("toastMessage","Next presses");
-        PendingIntent nexting = PendingIntent.getBroadcast(Singleton.Instance.applicationcontext,0,nextaction,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent nexting = PendingIntent.getBroadcast(applicationcontext,0,nextaction,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        Intent playaction = new Intent(Singleton.Instance.applicationcontext,NotificationReceiver.class);
+        Intent playaction = new Intent(applicationcontext,NotificationReceiver.class);
         playaction.putExtra("toastMessage",PLAY_ACTION);
-        PendingIntent playIntent = PendingIntent.getBroadcast(Singleton.Instance.applicationcontext,0,playaction,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playIntent = PendingIntent.getBroadcast(applicationcontext,0,playaction,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
 
         Notification notification;
-        notification = new NotificationCompat.Builder(Singleton.Instance.applicationcontext, CHANNEL_2_ID)
+        notification = new NotificationCompat.Builder(applicationcontext, CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_two)
                 .setContentTitle("title")
                 .setContentText("message")
                 .setLargeIcon(artwork)
                 .addAction(R.drawable.ic_dislike, "Dislike",null)
                 .addAction(R.drawable.ic_previous, "Previous", null)
-                .addAction(Singleton.Instance.isplaying?R.drawable.ic_pause: R.drawable.ic_play, "Pause", playIntent)
+                .addAction(isplaying?R.drawable.ic_pause: R.drawable.ic_play, "Pause", playIntent)
                 .addAction(R.drawable.ic_next, "Next", nexting)
                 .addAction(R.drawable.ic_like, "Like", null)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
@@ -54,10 +54,10 @@ public class Singleton {
 //                        .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setNumber(0)
-                .setOngoing(Singleton.Instance.isplaying)
+                .setOngoing(isplaying)
                 .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Singleton.Instance.applicationcontext);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(applicationcontext);
         notificationManager.notify(2, notification);
     }
 }
