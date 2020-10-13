@@ -116,10 +116,11 @@ public class CurrentPlayingsongSingleton {
         return context;
     }
 
-    private void shonotification(){
-        Intent Nextintent = new Intent(CurrentPlayingsongSingleton.getInstance().getContext(), Notificationreciever.class);
+    public void shonotification(){
+        System.out.println("context in notification:"+context );
+        Intent Nextintent = new Intent(context, Notificationreciever.class);
         Nextintent.putExtra(ACTION,ACTION_NEXT);
-        PendingIntent NextAction = PendingIntent.getBroadcast(CurrentPlayingsongSingleton.getInstance().getContext(),0,Nextintent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent NextAction = PendingIntent.getBroadcast(context,0,Nextintent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Intent Previntent = new Intent(CurrentPlayingsongSingleton.getInstance().getContext(),Notificationreciever.class);
@@ -140,14 +141,15 @@ public class CurrentPlayingsongSingleton {
                 .addAction(isplaying?R.drawable.pause: R.drawable.play, "Pause", PlayAction)
                 .addAction(R.drawable.next, "Next", NextAction)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(0,1,2)
+                        //.setShowActionsInCompactView(0,1,2)
                 )
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setNumber(0)
                 .setOngoing(isplaying)
                 .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(2, notification);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(CurrentPlayingsongSingleton.getInstance().getContext());
+        notificationManager.notify(1, notification);
     }
 }
