@@ -11,8 +11,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SongPlaying" android:launchMode="singleInstance"/>
-        <activity android:name=".MainActivity" android:launchMode="singleInstance">
+        <activity android:name=".Activities.SongPlaying" android:launchMode="singleInstance"/>
+        <activity android:name=".Activities.MainActivity" android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

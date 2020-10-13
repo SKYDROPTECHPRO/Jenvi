@@ -1,4 +1,6 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.models;
+
+import android.graphics.Bitmap;
 
 public class SongModel {
     private String path;
@@ -7,14 +9,15 @@ public class SongModel {
     private String album;
     private String duration;
     private int albumart;
-
-    public SongModel(String path, String title, String artist, String album, String duration, int albumart) {
+    private Bitmap Albumartbitmap;
+    public SongModel(String path, String title, String artist, String album, String duration, int albumart,Bitmap albumartbitmap) {
         this.path = path;
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.duration = duration;
         this.albumart = albumart;
+        this.Albumartbitmap = albumartbitmap;
     }
 
     public String getPath() {
@@ -63,5 +66,13 @@ public class SongModel {
 
     public void setAlbumart(int albumart) {
         this.albumart = albumart;
+    }
+
+    public Bitmap getAlbumartbitmap() {
+        return Albumartbitmap;
+    }
+
+    public void setAlbumartbitmap(Bitmap albumartbitmap) {
+        Albumartbitmap = albumartbitmap;
     }
 }

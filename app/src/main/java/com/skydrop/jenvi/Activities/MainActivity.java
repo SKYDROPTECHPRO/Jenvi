@@ -1,4 +1,4 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +8,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +24,12 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.skydrop.jenvi.Adapters.rec_adapter;
+import com.skydrop.jenvi.Interfaces.RecyclerviewClickListener;
+import com.skydrop.jenvi.R;
+import com.skydrop.jenvi.Singletons.CurrentPlayingsongSingleton;
+import com.skydrop.jenvi.Singletons.SongsListSingleton;
+import com.skydrop.jenvi.models.SongModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent playingsong = new Intent(MainActivity.this,SongPlaying.class);
+                Intent playingsong = new Intent(MainActivity.this, SongPlaying.class);
                 startActivity(playingsong);
             }
         });
@@ -75,12 +83,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if(v == play_pause_bnt){
-                if(currentsong.isIsplaying()){
-                    currentsong.pause();
+                currentsong.playorpause();
+                if(!currentsong.isIsplaying()){
                     play_pause_bnt.setImageResource(R.drawable.play);
                 }
                 else{
-                    currentsong.play();
                     play_pause_bnt.setImageResource(R.drawable.pause);
                 }
             }
@@ -122,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getdata(Context context) {
+        Bitmap defaultart = BitmapFactory.decodeResource(getResources(),R.drawable.defaultalbumart);
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projections = {
                 MediaStore.Audio.Media.ALBUM,
@@ -138,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 String duration = cursor.getString(2);
                 String path = cursor.getString(3);
                 String artist = cursor.getString(4);
-                SongModel tempmodel = new SongModel(path,title,artist,album,duration,R.drawable.defaultalbumart);
+                SongModel tempmodel = new SongModel(path,title,artist,album,duration,R.drawable.defaultalbumart,defaultart);
                 songslist.add(tempmodel);
             }
             cursor.close();

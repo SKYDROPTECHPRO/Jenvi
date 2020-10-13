@@ -1,6 +1,5 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Adapters;
 
-import android.content.Context;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.skydrop.jenvi.Interfaces.RecyclerviewClickListener;
+import com.skydrop.jenvi.R;
+import com.skydrop.jenvi.Singletons.SongsListSingleton;
+import com.skydrop.jenvi.models.SongModel;
 
 public class rec_adapter extends RecyclerView.Adapter<rec_adapter.Myview> {
     private Context context;

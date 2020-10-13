@@ -1,4 +1,4 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.skydrop.jenvi.R;
+import com.skydrop.jenvi.Singletons.CurrentPlayingsongSingleton;
 
 public class SongPlaying extends AppCompatActivity {
 
@@ -32,12 +35,11 @@ public class SongPlaying extends AppCompatActivity {
         playpauseicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentsong.isIsplaying()){
-                    currentsong.pause();
+                currentsong.playorpause();
+                if(!currentsong.isIsplaying()){
                     playpauseicon.setImageResource(R.drawable.play);
                 }
                 else{
-                    currentsong.play();
                     playpauseicon.setImageResource(R.drawable.pause);
                 }
             }

@@ -1,4 +1,6 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Singletons;
+
+import com.skydrop.jenvi.models.SongModel;
 
 import java.util.ArrayList;
 
