@@ -23,7 +23,7 @@ public class Applicationclass  extends Application {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID_1,
                     "Music",
-                    NotificationManager.IMPORTANCE_HIGH
+                    NotificationManager.IMPORTANCE_LOW
             );
             notificationChannel.setDescription("Music display");
 
