@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +31,7 @@ public class Playeractivity extends AppCompatActivity {
     Handler handler;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playeractivity);
         song.setFlag(PlAYERACTIVITY_FLAG);
@@ -39,7 +40,7 @@ public class Playeractivity extends AppCompatActivity {
         song.play = play;
         song.SongName = songName;
         songName.setText(singleton.getSingslist(song.position).getTitle());
-        song.seek_Bar(seekBar,played_duration,total_duration,handler);
+        song.seek_Bar(seekBar, played_duration, total_duration, handler);
         play.setOnClickListener(listener);
         back.setOnClickListener(listener);
         next.setOnClickListener(listener);
@@ -49,22 +50,18 @@ public class Playeractivity extends AppCompatActivity {
     private OnClickListener listener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(view == play){
+            if (view == play) {
                 song.player();
                 return;
-            }
-            else if(view == back){
+            } else if (view == back) {
                 onBackPressed();
                 return;
-            }
-            else if(view == next){
+            } else if (view == next) {
                 song.next(getApplicationContext());
-            }
-            else if(view == prev)
-            {
+            } else if (view == prev) {
                 song.prev(getApplicationContext());
             }
-            song.seek_Bar(seekBar,played_duration,total_duration,handler);
+            song.seek_Bar(seekBar, played_duration, total_duration, handler);
         }
     };
 

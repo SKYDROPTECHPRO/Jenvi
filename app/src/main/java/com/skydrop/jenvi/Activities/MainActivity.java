@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         song.setFlag(MAINACTIVITY_FLAG);
         System.out.println("main activity started");
         recview = findViewById(R.id.recview);
-        currentSong = (TextView)findViewById(R.id.currentSong);
+        currentSong = (TextView) findViewById(R.id.currentSong);
 
         songdata = SongsList_singleton.getInstance();
         currentSong.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 song.txt = currentSong;
-                System.out.println("song txt"+song.txt);
-                song.play(getApplicationContext(),pos);
+                System.out.println("song txt" + song.txt);
+                song.play(getApplicationContext(), pos);
 
             }
 
         };
-        rec_view adapter = new rec_view(MainActivity.this,Listener);
+        rec_view adapter = new rec_view(MainActivity.this, Listener);
         recview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recview.setAdapter(adapter);
     }
@@ -129,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Audio.Media.ALBUM_ID,
         };
 
-        Cursor cursor = context.getContentResolver().query(uri,projections,null,null,null);
-        if(cursor!=null){
-            while (cursor.moveToNext()){
+        Cursor cursor = context.getContentResolver().query(uri, projections, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
                 String album = cursor.getString(0);
                 String title = cursor.getString(1);
                 String duration = cursor.getString(2);
@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        for(int i=0;i<songdata.getsize();i++){
+        for (int i = 0; i < songdata.getsize(); i++) {
             System.out.println(
-                    "Each song:"+
+                    "Each song:" +
                             songdata.getSingslist(i).toString()
             );
         }
