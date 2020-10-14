@@ -18,7 +18,7 @@ import static com.skydrop.jenvi.Applications.App.PlAYERACTIVITY_FLAG;
 
 public class Playeractivity extends AppCompatActivity {
     SongsList_singleton singleton = SongsList_singleton.getInstance();
-    song_singleton song = song_singleton.instance;
+    song_singleton song = song_singleton.getInstance();
     ImageButton back;
     ImageButton play;
     ImageButton prev;
@@ -33,7 +33,7 @@ public class Playeractivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playeractivity);
-        song.flag = PlAYERACTIVITY_FLAG;
+        song.setFlag(PlAYERACTIVITY_FLAG);
         handler = new Handler();
         setMappings();
         song.play = play;

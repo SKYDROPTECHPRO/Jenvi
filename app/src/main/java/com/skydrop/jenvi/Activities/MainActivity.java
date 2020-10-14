@@ -32,7 +32,7 @@ import static com.skydrop.jenvi.Applications.App.MAINACTIVITY_FLAG;
 
 public class MainActivity extends AppCompatActivity {
     SongsList_singleton songdata;
-    song_singleton song = song_singleton.instance;
+    song_singleton song = song_singleton.getInstance();
     SongModel model;
     RecyclerView recview;
     TextView currentSong;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        song.flag = MAINACTIVITY_FLAG;
+        song.setFlag(MAINACTIVITY_FLAG);
         System.out.println("main activity started");
         recview = findViewById(R.id.recview);
         currentSong = (TextView)findViewById(R.id.currentSong);

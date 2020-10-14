@@ -22,9 +22,8 @@ public class song_singleton extends AppCompatActivity {
     public TextView SongName;
     public TextView txt;
     public ImageButton play;
-    public int flag;
-    @SuppressLint("StaticFieldLeak")
-    public static song_singleton instance = new song_singleton();
+    private int flag;
+    private static song_singleton instance = new song_singleton();
     public void play(final Context context, int position) {
             this.position = position;
         SongModel model = singleton.getSingslist(position);
@@ -125,6 +124,13 @@ public void seek_Bar(final SeekBar seekBar, final TextView played_duration, Text
         play(applicationContext,position);
     }
 
+    public static song_singleton getInstance() {
+        return instance;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 }
 
 
