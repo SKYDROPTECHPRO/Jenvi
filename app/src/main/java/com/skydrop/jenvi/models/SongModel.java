@@ -1,4 +1,4 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.models;
 
 public class SongModel {
     public String getId() {
@@ -15,25 +15,6 @@ public class SongModel {
     String duration;
     String artist;
     String path;
-
-    @Override
-    public String toString() {
-        return "SongModel{" +
-                "album='" + album + '\'' +
-                ", title='" + title + '\'' +
-                ", duration='" + duration + '\'' +
-                ", artist='" + artist + '\'' +
-                ", path='" + path + '\'' +
-                ", id='" + id + '\'' +
-                '}';
-    }
-/* public SongModel(String album, String title, String duration, String artist, String path) {
-        this.album = album;
-        this.title = title;
-        this.duration = duration;
-        this.artist = artist;
-        this.path = path;
-    }*/
 
     public SongModel() {
     }

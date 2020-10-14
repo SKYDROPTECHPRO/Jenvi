@@ -1,9 +1,11 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.singleton;
+
+import com.skydrop.jenvi.models.SongModel;
 
 import java.util.ArrayList;
 
-public class   SongsList_singleton {
-    ArrayList<SongModel> songslist;
+public class SongsList_singleton {
+    private ArrayList<SongModel> songslist;
     private static SongsList_singleton Instance = new SongsList_singleton();
 
     public static SongsList_singleton getInstance(){

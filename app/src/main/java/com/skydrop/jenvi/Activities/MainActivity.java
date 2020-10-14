@@ -1,29 +1,18 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.util.Size;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,17 +22,13 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.skydrop.jenvi.Playeractivity;
+import com.skydrop.jenvi.Adapters.rec_view;
 import com.skydrop.jenvi.R;
-import com.skydrop.jenvi.SongModel;
-import com.skydrop.jenvi.SongsList_singleton;
-import com.skydrop.jenvi.rec_view;
-import com.skydrop.jenvi.song_singleton;
+import com.skydrop.jenvi.models.SongModel;
+import com.skydrop.jenvi.singleton.SongsList_singleton;
+import com.skydrop.jenvi.singleton.song_singleton;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import static com.skydrop.jenvi.Applications.App.MAINACTIVITY_FLAG;
 
 public class MainActivity extends AppCompatActivity {
     SongsList_singleton songdata;
@@ -52,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recview;
     TextView currentSong;
     rec_view.RecyclerViewClickListener Listener;
-    public static int position;
+
     public static Bitmap album_art;
     ContentResolver resolver;
     public static Uri art;
@@ -61,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        song.flag = MAINACTIVITY_FLAG;
         System.out.println("main activity started");
         recview = findViewById(R.id.recview);
         currentSong = (TextView)findViewById(R.id.currentSong);
@@ -78,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         Listener = new rec_view.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int pos) {
-                position = pos;
 
              /*  Long uriId = Long.valueOf(songdata.getSingslist(position).getId());
                Uri uri = Uri.parse("content://media/external/audio/albumart");
@@ -103,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                 song.txt = currentSong;
                 System.out.println("song txt"+song.txt);
-                song.play(getApplicationContext());
+                song.play(getApplicationContext(),pos);
 
             }
 

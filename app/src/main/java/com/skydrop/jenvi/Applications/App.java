@@ -1,4 +1,4 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Applications;
 
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -9,6 +9,9 @@ import android.os.Build;
 public class App extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
+    public static final int MAINACTIVITY_FLAG = 1;
+    public static final int PlAYERACTIVITY_FLAG = 0;
+    public static final int NOTIFICATION_FLAG = 2;
 
     @Override
     public void onCreate() {

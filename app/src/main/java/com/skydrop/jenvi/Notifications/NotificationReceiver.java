@@ -1,4 +1,4 @@
-package com.skydrop.jenvi;
+package com.skydrop.jenvi.Notifications;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
