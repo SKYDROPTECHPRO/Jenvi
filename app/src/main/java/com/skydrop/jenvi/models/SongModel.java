@@ -1,5 +1,7 @@
 package com.skydrop.jenvi.models;
 
+import android.graphics.Bitmap;
+
 public class SongModel {
     public String getId() {
         return id;
@@ -15,6 +17,7 @@ public class SongModel {
     String duration;
     String artist;
     String path;
+    private Bitmap Albumart;
 
     public SongModel() {
     }
