@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +16,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import static com.skydrop.jenvi.App.CHANNEL_1_ID;
-import static com.skydrop.jenvi.App.CHANNEL_2_ID;
-import static com.skydrop.jenvi.NotificationReceiver.PLAY_ACTION;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextMessage;
 
-
-    private MediaSessionCompat mediaSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         editTextTitle = findViewById(R.id.edit_text_title);
         editTextMessage = findViewById(R.id.edit_text_message);
 
-        mediaSession = new MediaSessionCompat(this, "tag");
     }
 
     public void sendOnChannel1(View v) {
