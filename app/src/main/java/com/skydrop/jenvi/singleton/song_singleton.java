@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +28,7 @@ public class song_singleton extends AppCompatActivity {
     //region Private Variables
     private MediaPlayer mediaPlayer;
     private int flag;
+    private SongModel model;
     //endregion
 
     //region Public Variables
@@ -33,6 +36,10 @@ public class song_singleton extends AppCompatActivity {
     public TextView Player_SongName;
     public ImageButton Player_Play;
     public ImageView Player_albumart;
+    public TextView played_duration;
+    public TextView total_duration;
+    public SeekBar seekBar;
+    public Handler handler;
 
     public TextView Main_SongName;
     public ImageView Main_albumart;
@@ -46,15 +53,21 @@ public class song_singleton extends AppCompatActivity {
 
     public void play(final Context context, int position) {
         this.position = position;
-        SongModel model = singleton.getSingslist(position);
+        model = singleton.getSingslist(position);
 
         //region New Song Creating
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
 
-        mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
-        mediaPlayer.start();
+        mediaPlayer = MediaPlayer.create(context, Uri.parse(model.getPath()));
+
+        try{
+            mediaPlayer.start();
+        }
+        catch (Exception e){
+            next(context);
+        }
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -67,6 +80,7 @@ public class song_singleton extends AppCompatActivity {
             Player_SongName.setText(model.getTitle());
             Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
             Player_albumart.setImageBitmap(model.getAlbumart());
+            seek_Bar();
         }
         else if (flag == MAINACTIVITY_FLAG) {
             Main_SongName.setText(model.getTitle());
@@ -75,8 +89,8 @@ public class song_singleton extends AppCompatActivity {
         }
     }
 
-    //TODO: Move to player activity
-    public void seek_Bar(final SeekBar seekBar, final TextView played_duration, TextView total_duration, final android.os.Handler handler) {
+
+    public void seek_Bar() {
         int duration = mediaPlayer.getDuration();
 
         total_duration.setText(formattedTime(duration));
@@ -163,6 +177,3 @@ public class song_singleton extends AppCompatActivity {
     public boolean getIsPlaying(){return mediaPlayer.isPlaying();}
     //endregion
 }
-
-
-

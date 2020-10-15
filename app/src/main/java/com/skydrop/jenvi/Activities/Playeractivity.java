@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +30,10 @@ public class Playeractivity extends AppCompatActivity {
             if (view == play) {
                 if (song.getIsPlaying()) {
                     play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-                    song.playsong();
+                    song.pausesong();
                 } else {
                     play.setImageResource(R.drawable.ic_baseline_pause_24);
-                    song.pausesong();
+                    song.playsong();
                 }
                 return;
             } else if (view == back) {
@@ -43,10 +44,10 @@ public class Playeractivity extends AppCompatActivity {
             } else if (view == prev) {
                 song.prev(getApplicationContext());
             }
-            song.seek_Bar(seekBar, played_duration, total_duration, handler);
         }
     };
     //endregion
+
 
     //region Private Variables
     private ImageButton back;
@@ -55,12 +56,6 @@ public class Playeractivity extends AppCompatActivity {
     private ImageButton next;
 
     private TextView songName;
-    private TextView played_duration;
-    private TextView total_duration;
-
-    private SeekBar seekBar;
-
-    private Handler handler;
     //endregion
 
     @Override
@@ -70,13 +65,9 @@ public class Playeractivity extends AppCompatActivity {
         song.setFlag(PlAYERACTIVITY_FLAG);
         setMappings();
 
-        song.Player_Play = play;
-        song.Player_SongName = songName;
-        song.Player_albumart = findViewById(R.id.Player_albumart);
+        song.handler = new Handler();
 
-        handler = new Handler();
-
-        song.seek_Bar(seekBar, played_duration, total_duration, handler);
+        song.seek_Bar();
         songName.setText(singleton.getSingslist(song.position).getTitle());
 
         //region Listeners
@@ -102,10 +93,14 @@ public class Playeractivity extends AppCompatActivity {
 
         songName = findViewById(R.id.name);
 
-        played_duration = findViewById(R.id.playduration);
-        total_duration = findViewById(R.id.totalduration);
+        song.played_duration = findViewById(R.id.playduration);
+        song.total_duration = findViewById(R.id.totalduration);
 
-        seekBar = findViewById(R.id.seekBar);
+        song.seekBar = findViewById(R.id.seekBar);
+
+        song.Player_Play = play;
+        song.Player_SongName = songName;
+        song.Player_albumart = findViewById(R.id.Player_albumart);
     }
 }
 
