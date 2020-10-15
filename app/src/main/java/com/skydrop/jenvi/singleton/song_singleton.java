@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -29,9 +30,13 @@ public class song_singleton extends AppCompatActivity {
 
     //region Public Variables
     public int position;
-    public TextView SongName;
-    public TextView txt;
-    public ImageButton play;
+    public TextView Player_SongName;
+    public ImageButton Player_Play;
+    public ImageView Player_albumart;
+
+    public TextView Main_SongName;
+    public ImageView Main_albumart;
+    public ImageButton Main_Play;
     //endregion
 
     //region Static Variables
@@ -42,9 +47,12 @@ public class song_singleton extends AppCompatActivity {
     public void play(final Context context, int position) {
         this.position = position;
         SongModel model = singleton.getSingslist(position);
+
+        //region New Song Creating
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
+
         mediaPlayer = MediaPlayer.create(context.getApplicationContext(), Uri.parse(model.getPath()));
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -53,31 +61,39 @@ public class song_singleton extends AppCompatActivity {
                 next(context);
             }
         });
+        //endregion
 
         if (flag == PlAYERACTIVITY_FLAG) {
-            SongName.setText(model.getTitle());
-            play.setImageResource(R.drawable.ic_baseline_pause_24);
-        } else if (flag == MAINACTIVITY_FLAG) {
-            txt.setText(model.getTitle());
+            Player_SongName.setText(model.getTitle());
+            Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
+            Player_albumart.setImageBitmap(model.getAlbumart());
+        }
+        else if (flag == MAINACTIVITY_FLAG) {
+            Main_SongName.setText(model.getTitle());
+            Main_albumart.setImageBitmap(model.getAlbumart());
+            Main_Play.setImageResource(R.drawable.ic_baseline_pause_24);
         }
     }
 
+    //TODO: Move to player activity
     public void seek_Bar(final SeekBar seekBar, final TextView played_duration, TextView total_duration, final android.os.Handler handler) {
-
         int duration = mediaPlayer.getDuration();
+
         total_duration.setText(formattedTime(duration));
-        seekBar.setMax(mediaPlayer.getDuration());
+        seekBar.setMax(duration);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (mediaPlayer != null && b) {
                     mediaPlayer.seekTo(i * 1000);
                     mediaPlayer.seekTo(seekBar.getProgress());
-                    play.setImageResource(R.drawable.ic_baseline_pause_24);
+                    Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
                     mediaPlayer.start();
                 }
             }
 
+            //region Unused Overrides
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
@@ -85,7 +101,9 @@ public class song_singleton extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
+            //endregion
         });
+
         song_singleton.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -113,14 +131,12 @@ public class song_singleton extends AppCompatActivity {
         play(applicationContext, --position);
     }
 
-    public void player() {
-        if (mediaPlayer.isPlaying()) {
-            play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-            mediaPlayer.pause();
-        } else {
-            play.setImageResource(R.drawable.ic_baseline_pause_24);
-            mediaPlayer.start();
-        }
+    public void playsong(){
+        mediaPlayer.start();
+    }
+
+    public void pausesong(){
+        mediaPlayer.pause();
     }
 
     private String formattedTime(int currentPos) {
@@ -144,6 +160,7 @@ public class song_singleton extends AppCompatActivity {
     public void setFlag(int flag) {
         this.flag = flag;
     }
+    public boolean getIsPlaying(){return mediaPlayer.isPlaying();}
     //endregion
 }
 

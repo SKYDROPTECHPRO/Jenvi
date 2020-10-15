@@ -27,7 +27,13 @@ public class Playeractivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if (view == play) {
-                song.player();
+                if (song.getIsPlaying()) {
+                    play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                    song.playsong();
+                } else {
+                    play.setImageResource(R.drawable.ic_baseline_pause_24);
+                    song.pausesong();
+                }
                 return;
             } else if (view == back) {
                 onBackPressed();
@@ -64,8 +70,9 @@ public class Playeractivity extends AppCompatActivity {
         song.setFlag(PlAYERACTIVITY_FLAG);
         setMappings();
 
-        song.play = play;
-        song.SongName = songName;
+        song.Player_Play = play;
+        song.Player_SongName = songName;
+        song.Player_albumart = findViewById(R.id.Player_albumart);
 
         handler = new Handler();
 
