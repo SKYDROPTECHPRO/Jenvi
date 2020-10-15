@@ -17,25 +17,31 @@ import static com.skydrop.jenvi.Applications.App.MAINACTIVITY_FLAG;
 import static com.skydrop.jenvi.Applications.App.PlAYERACTIVITY_FLAG;
 
 public class song_singleton extends AppCompatActivity {
+
+    //region Final Variables
     private final SongsList_singleton singleton = SongsList_singleton.getInstance();
+    //endregion
+
+    //region Private Variables
     private MediaPlayer mediaPlayer;
+    private int flag;
+    //endregion
+
+    //region Public Variables
     public int position;
     public TextView SongName;
     public TextView txt;
     public ImageButton play;
-    private int flag;
+    //endregion
+
+    //region Static Variables
     @SuppressLint("StaticFieldLeak")
     private static final song_singleton instance = new song_singleton();
+    //endregion
 
     public void play(final Context context, int position) {
         this.position = position;
         SongModel model = singleton.getSingslist(position);
-        if (flag == PlAYERACTIVITY_FLAG) {
-            SongName.setText(singleton.getSingslist(position).getTitle());
-            play.setImageResource(R.drawable.ic_baseline_pause_24);
-        } else if (flag == MAINACTIVITY_FLAG) {
-            txt.setText(singleton.getSingslist(position).getTitle());
-        }
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
@@ -47,15 +53,12 @@ public class song_singleton extends AppCompatActivity {
                 next(context);
             }
         });
-    }
 
-    public void player() {
-        if (mediaPlayer.isPlaying()) {
-            play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-            mediaPlayer.pause();
-        } else {
+        if (flag == PlAYERACTIVITY_FLAG) {
+            SongName.setText(model.getTitle());
             play.setImageResource(R.drawable.ic_baseline_pause_24);
-            mediaPlayer.start();
+        } else if (flag == MAINACTIVITY_FLAG) {
+            txt.setText(model.getTitle());
         }
     }
 
@@ -96,20 +99,6 @@ public class song_singleton extends AppCompatActivity {
         });
     }
 
-    private String formattedTime(int currentPos) {
-        String total1;
-        String total2;
-        currentPos /= 1000;
-        String seconds = String.valueOf(currentPos % 60);
-        String minutes = String.valueOf(currentPos / 60);
-        total1 = minutes + ":" + "0" + seconds;
-        total2 = minutes + ":" + seconds;
-        if (seconds.length() == 1)
-            return total1;
-        else
-            return total2;
-    }
-
     public void next(Context applicationContext) {
         if (position >= singleton.getsize() - 1) {
             position = -1;
@@ -124,13 +113,38 @@ public class song_singleton extends AppCompatActivity {
         play(applicationContext, --position);
     }
 
+    public void player() {
+        if (mediaPlayer.isPlaying()) {
+            play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            mediaPlayer.pause();
+        } else {
+            play.setImageResource(R.drawable.ic_baseline_pause_24);
+            mediaPlayer.start();
+        }
+    }
+
+    private String formattedTime(int currentPos) {
+        String total1;
+        String total2;
+        currentPos /= 1000;
+        String seconds = String.valueOf(currentPos % 60);
+        String minutes = String.valueOf(currentPos / 60);
+        total1 = minutes + ":" + "0" + seconds;
+        total2 = minutes + ":" + seconds;
+        if (seconds.length() == 1)
+            return total1;
+        else
+            return total2;
+    }
+
+    //region Getters and Setters
     public static song_singleton getInstance() {
         return instance;
     }
-
     public void setFlag(int flag) {
         this.flag = flag;
     }
+    //endregion
 }
 
 
