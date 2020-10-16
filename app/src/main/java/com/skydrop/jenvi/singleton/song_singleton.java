@@ -1,7 +1,10 @@
 package com.skydrop.jenvi.singleton;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -9,15 +12,24 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+
+import com.skydrop.jenvi.Activities.Playeractivity;
+import com.skydrop.jenvi.Notifications.NotificationReceiver;
 import com.skydrop.jenvi.R;
 import com.skydrop.jenvi.models.SongModel;
 
+import static com.skydrop.jenvi.Applications.App.CHANNEL_1_ID;
 import static com.skydrop.jenvi.Applications.App.MAINACTIVITY_FLAG;
 import static com.skydrop.jenvi.Applications.App.PlAYERACTIVITY_FLAG;
+import static com.skydrop.jenvi.Notifications.NotificationReceiver.ACTION_NAME;
+import static com.skydrop.jenvi.Notifications.NotificationReceiver.NEXT_ACTION;
+import static com.skydrop.jenvi.Notifications.NotificationReceiver.PLAY_ACTION;
+import static com.skydrop.jenvi.Notifications.NotificationReceiver.PREV_ACTION;
 
 public class song_singleton extends AppCompatActivity {
 
@@ -29,6 +41,7 @@ public class song_singleton extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private int flag;
     private SongModel model;
+    private Context app_context;
     //endregion
 
     //region Public Variables
@@ -53,6 +66,7 @@ public class song_singleton extends AppCompatActivity {
 
     public void play(final Context context, int position) {
         this.position = position;
+        this.app_context = context;
         model = singleton.getSingslist(position);
 
         //region New Song Creating
@@ -60,10 +74,10 @@ public class song_singleton extends AppCompatActivity {
             mediaPlayer.stop();
         }
 
-        mediaPlayer = MediaPlayer.create(context, Uri.parse(model.getPath()));
+        mediaPlayer = MediaPlayer.create(app_context, Uri.parse(model.getPath()));
 
         try{
-            mediaPlayer.start();
+            playsong();
         }
         catch (Exception e){
             next(context);
@@ -76,19 +90,50 @@ public class song_singleton extends AppCompatActivity {
         });
         //endregion
 
-        if (flag == PlAYERACTIVITY_FLAG) {
-            Player_SongName.setText(model.getTitle());
-            Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
-            Player_albumart.setImageBitmap(model.getAlbumart());
-            seek_Bar();
-        }
-        else if (flag == MAINACTIVITY_FLAG) {
-            Main_SongName.setText(model.getTitle());
-            Main_albumart.setImageBitmap(model.getAlbumart());
-            Main_Play.setImageResource(R.drawable.ic_baseline_pause_24);
-        }
+        showdata();
     }
 
+
+    //TODO: Custom Notification
+    public void shownotification(){
+
+        Intent plyayintent = new Intent(app_context,NotificationReceiver.class);
+        plyayintent.putExtra(ACTION_NAME,PLAY_ACTION);
+
+        Intent previntent = new Intent(app_context,NotificationReceiver.class);
+        previntent.putExtra(ACTION_NAME,PREV_ACTION);
+//        PendingIntent prevaction = PendingIntent.getBroadcast(app_context,0,previntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+//        PendingIntent playaction = PendingIntent.getBroadcast(app_context,0,plyayintent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent nextintent = new Intent(app_context, NotificationReceiver.class);
+        nextintent.putExtra(ACTION_NAME,NEXT_ACTION);
+//        PendingIntent nextaction = PendingIntent.getBroadcast(app_context,0,nextintent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent openactivity = new Intent(app_context, Playeractivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(app_context, 0, openactivity, 0);
+
+
+        int resourse = mediaPlayer.isPlaying()?R.drawable.ic_baseline_pause_24: R.drawable.ic_baseline_play_arrow_24;
+
+        Notification notification = new NotificationCompat.Builder(app_context, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_two)
+                .setContentTitle(model.getTitle())
+                .setContentText(model.getAlbum())
+                .setLargeIcon(model.getAlbumart())
+                .addAction(R.drawable.ic_previous, "Previous", PendingIntent.getBroadcast(app_context,0,previntent,PendingIntent.FLAG_UPDATE_CURRENT))
+                .addAction(resourse, "Pause", PendingIntent.getBroadcast(app_context,0,plyayintent,PendingIntent.FLAG_UPDATE_CURRENT))
+                .addAction(R.drawable.ic_next, "Next", PendingIntent.getBroadcast(app_context,0,nextintent,PendingIntent.FLAG_UPDATE_CURRENT))
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle())
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+//                .setContentIntent(pendingIntent)
+                .setOngoing(mediaPlayer.isPlaying())
+                .build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app_context);
+        notificationManager.notify(2, notification);
+    }
 
     public void seek_Bar() {
         int duration = mediaPlayer.getDuration();
@@ -103,7 +148,7 @@ public class song_singleton extends AppCompatActivity {
                     mediaPlayer.seekTo(i * 1000);
                     mediaPlayer.seekTo(seekBar.getProgress());
                     Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
-                    mediaPlayer.start();
+                    playsong();
                 }
             }
 
@@ -131,26 +176,43 @@ public class song_singleton extends AppCompatActivity {
         });
     }
 
-    public void next(Context applicationContext) {
+    public void next(Context context) {
         if (position >= singleton.getsize() - 1) {
             position = -1;
         }
-        play(applicationContext, ++position);
+        play(context,++position);
     }
 
-    public void prev(Context applicationContext) {
+    public void prev(Context context) {
         if (position <= 0) {
             position = singleton.getsize();
         }
-        play(applicationContext, --position);
+        play(context,--position);
     }
 
     public void playsong(){
         mediaPlayer.start();
+        shownotification();
     }
 
     public void pausesong(){
         mediaPlayer.pause();
+        shownotification();
+    }
+
+    public void showdata(){
+        if(model!=null) {
+            if (flag == PlAYERACTIVITY_FLAG) {
+                Player_SongName.setText(model.getTitle());
+                Player_Play.setImageResource(R.drawable.ic_baseline_pause_24);
+                Player_albumart.setImageBitmap(model.getAlbumart());
+                seek_Bar();
+            } else if (flag == MAINACTIVITY_FLAG) {
+                Main_SongName.setText(model.getTitle());
+                Main_albumart.setImageBitmap(model.getAlbumart());
+                Main_Play.setImageResource(R.drawable.ic_baseline_pause_24);
+            }
+        }
     }
 
     private String formattedTime(int currentPos) {

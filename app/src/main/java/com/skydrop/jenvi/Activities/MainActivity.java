@@ -82,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         song.setFlag(MAINACTIVITY_FLAG);
 
-        runtimepersimissions();
+
+        if (songdata.getsize() == 0) {
+            runtimepersimissions();
+        }
 
         setmappings();
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         recview.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recview.setAdapter(adapter);
         //endregion
+
     }
 
     private void setmappings() {
@@ -109,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         prev.setOnClickListener(listener);
         play.setOnClickListener(listener);
         bottombar.setOnClickListener(listener);
+
+        song.showdata();
     }
 
     private void runtimepersimissions() {

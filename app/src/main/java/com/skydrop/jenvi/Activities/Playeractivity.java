@@ -1,5 +1,6 @@
 package com.skydrop.jenvi.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -82,6 +83,7 @@ public class Playeractivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         song.setFlag(MAINACTIVITY_FLAG);
     }
 
